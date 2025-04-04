@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style.css">
+    <title>TaskTrack</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/home">TaskTrack</a>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item active">
+                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
+                    Add Task
+                </button>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Ongoing</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Upcoming</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Completed</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Sign-out</a>
+            </li>
+          </ul>
+        </div><hr>
+    </nav>
+    
+    <!--Button Modal-->
+    <div class="modal fade" id="exampleModal">
+        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/home" class="new-task">
+                    <div class="form-group">
+                      <label for="title">Task Title</label>
+                      <input type="text" class="form-control" id="title" placeholder="Enter task title" required name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="desc">Task Description</label>
+                        <textarea class="form-control" name="description" id="desc" rows="2" placeholder="Brief Details (optional)"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="date">Select Due Date</label>
+                            <input type="date" class="form-control" id="date" required name="dueDate">
+                        </div>
+                        <div class="form-group col-md-4 ml-5">
+                            <label for="set-priority">Set Priority</label> <br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="priority" id="low" value="low">
+                                <label class="form-check-label" for="low">Low</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="priority" id="medium" value="medium">
+                                <label class="form-check-label" for="medium">Medium</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="priority" id="high" value="high">
+                                <label class="form-check-label" for="high">High</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" id="checkbox" required>
+                      <label class="form-check-label" for="checkbox">Check me</label>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!--All Tasks-->
+    
+    <div class="task-container col-sm-8 ml-auto">
+        <h2>All Tasks</h2>
+        <% for(task of allTasks) { %>
+            <div class="task" id="<%= task.id %>">
+                <div class="task-info1">
+                    <h4 class="task-title"><%= task.title %></h4>
+                    <p class="task-dueDate"><b>Due Date</b>: <span><%= (task.dueDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric"
+                    }); %></span></p>
+                </div>
+                <div class="task-info2">
+                    <div class="status-info">
+                        <p>Status: </p>
+                        <p class="<%= task.status %>"><%= task.status %></p>
+                    </div>
+                    <form method="post" action="/changeStatus/<%= task.id %>/<%= task.status %>?_method=PATCH">
+                        <button class="status-btn btn" id="status-<%= task.status %>" >start</button>
+                    </form>
+                </div>
+                <!-- <button onclick="deleteTask('<%= task.id %>')">Delete</button> -->
+            </div>
+        <% } %>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+
+        let startBtns = document.querySelectorAll("#status-pending");
+        let compBtns = document.querySelectorAll("#status-ongoing");
+        for(btn of startBtns) {
+            btn.innerText = "Start";
+            btn.classList.add("btn-danger");
+        }
+
+        for(btn of compBtns) {
+            btn.innerText = "Complete";
+            btn.classList.add("btn-success");
+        }
+
+        async function deleteTask(taskId) {        
+            const response = await fetch(`/home/${taskId}?_method=DELETE`, { method: "post" });
+        
+            if (response.ok) {
+                document.getElementById(taskId).remove(); // Refresh task list dynamically
+            } else {
+                alert("Error completing task!");
+            }
+        }
+    </script>
+    <script>
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
+    </script>
+</body>
+</html>

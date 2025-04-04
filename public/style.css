@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h2 {
+    margin-left: 10px;
+}
+
+.task-container {
+    margin: 30px;
+    min-height: 100vh;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #e3f2fd;  /* Lighter blue */
+}
+
+.task {
+    border: 1px solid #ccc;  /* Lighter border */
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* Smooth shadow */
+}
+
+.task:hover {
+    transform: scale(1.02);
+}
+
+.task p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.task .task-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.task .task-dueDate {
+    font-size: 12px;
+    color: #555;
+}
+
+.task span {
+    color: rgb(49, 190, 49);
+    font-weight: 600;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-info2 {
+    display: flex; 
+    gap: 12px;
+    width: 16vw;
+    justify-content: space-between;
+    line-height: 20px; 
+    /* margin-left: auto; */
+}
+
+.task .pending {
+    color: red;
+    font-weight: 600;
+}
+
+.task .ongoing {
+    color: orange;
+    font-weight: 600;
+}
+
+.task .completed {
+    color: green;
+    font-weight: 600;
+}
+
+.status-info {
+    display: inline-block;
+}
+
+.task .status-btn {
+    width: 100px;
+}
