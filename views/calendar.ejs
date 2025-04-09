@@ -1,0 +1,126 @@
+<% layout('boilerplate') -%>
+<% title = "Calendar" %>
+
+<div class="calendar-container py-5">
+  <div class="container bg-white shadow-lg p-4 rounded">
+
+    <h2 class="text-center mb-4"><i class="fas fa-calendar-alt text-primary"></i> TaskTrack Calendar</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <button class="btn btn-light shadow-sm rounded-circle" onclick="prevMonth()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <h4 id="monthYear" class="mb-0"></h4>
+      <button class="btn btn-light shadow-sm rounded-circle" onclick="nextMonth()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Weekday Headings -->
+    <div class="row text-center fw-bold bg-light border rounded-top py-2">
+      <div class="col">Sun</div>
+      <div class="col">Mon</div>
+      <div class="col">Tue</div>
+      <div class="col">Wed</div>
+      <div class="col">Thu</div>
+      <div class="col">Fri</div>
+      <div class="col">Sat</div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div id="calendar" class="row flex-wrap border border-top-0 rounded-bottom" style="min-height: 300px;"></div>
+
+  </div>
+</div>
+
+<!-- Font Awesome (add this in boilerplate head if not added) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Script -->
+<script>
+  let today = new Date();
+  let currentMonth = today.getMonth();
+  let currentYear = today.getFullYear();
+
+  const calendar = document.getElementById("calendar");
+  const monthYear = document.getElementById("monthYear");
+
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  function generateCalendar(month, year) {
+  calendar.innerHTML = "";
+
+  let firstDay = new Date(year, month, 1).getDay(); // Day of the week of 1st
+  let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  monthYear.innerText = `${months[month]} ${year}`;
+
+  let date = 1;
+
+  // Loop over weeks (max 6 weeks in a month)
+  for (let week = 0; week < 6; week++) {
+    let row = document.createElement("div");
+    row.className = "row";
+
+    // Loop over days (Sun to Sat)
+    for (let day = 0; day < 7; day++) {
+      let cell = document.createElement("div");
+      cell.className = "col border text-center py-3 calendar-day";
+      cell.style.height = "80px";
+
+      if (week === 0 && day < firstDay) {
+        // Blank cells before the 1st of the month
+        cell.innerHTML = "";
+      } else if (date > daysInMonth) {
+        // Don't fill after month's end
+        cell.innerHTML = "";
+      } else {
+        let isToday =
+          date === today.getDate() &&
+          month === today.getMonth() &&
+          year === today.getFullYear();
+
+        if (isToday) {
+          cell.classList.add("bg-primary", "text-white", "fw-bold", "rounded");
+        }
+
+        cell.innerHTML = `<strong>${date}</strong>`;
+        date++;
+      }
+
+      row.appendChild(cell);
+    }
+
+    calendar.appendChild(row);
+
+    if (date > daysInMonth) {
+      break; // Stop if all days are rendered
+    }
+  }
+}
+
+
+
+  function prevMonth() {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    generateCalendar(currentMonth, currentYear);
+  }
+
+  function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    generateCalendar(currentMonth, currentYear);
+  }
+
+  generateCalendar(currentMonth, currentYear);
+</script>

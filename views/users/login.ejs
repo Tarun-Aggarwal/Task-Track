@@ -1,0 +1,25 @@
+<% layout('boilerplate') -%>
+
+<body>
+    <div class="row mb-3 mt-3">
+      <div class="col-6 offset-3">
+        <h1 class="mb-3 mt-3">Login to TaskTrack</h1>
+        <form method="post" action="/login" novalidate class="needs-validation">
+          <div class="mb-3 mt-3">
+            <label for="email" class="form-label mt-3">Email</label>
+            <input type="text" id="email" name="email" class="form-control" placeholder="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+          </div>
+          <button class="btn btn-success">Login</button>
+        </form> <br><br>
+        <div>
+          <form action="/signup" method="get">Don't have an account?
+            <button class="btn btn-outline-danger ms-3">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>

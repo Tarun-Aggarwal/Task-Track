@@ -1,42 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="/style.css">
-    <title>TaskTrack</title>
-</head>
-<body>
+<% layout('boilerplate') %>
+<style>
+    .wave-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 25vw;
+  background: linear-gradient(to bottom right, #81ecec, #a29bfe);
+  overflow: hidden;
+  z-index: -1;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  
+  /* Centering content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/home">TaskTrack</a>
-        <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="/home">Home</a>
-            </li>
-            <li class="nav-item active">
-                <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
-                    Add Task
-                </button>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Ongoing</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Upcoming</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Completed</a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Sign-out</a>
-            </li>
-          </ul>
-        </div><hr>
-    </nav>
-    
+
+.wave-svg {
+  position: absolute;
+  bottom: 0;
+  left: -20%;
+  width: 200%;
+  animation: waveMove 10s ease-in-out infinite alternate;
+}
+
+@keyframes waveMove {
+  0% {
+    transform: translateY(0) scaleX(1);
+  }
+  100% {
+    transform: translateY(10px) scaleX(1.05);
+  }
+}
+
+.about-tasktrack {
+  color: white;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', sans-serif;
+  animation: fadeIn 1.5s ease-in-out;
+  text-align: center;
+  max-width: 280px;
+}
+
+
+.about-tasktrack h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.about-tasktrack p {
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+  </style>
+  
+
+<body>
+    <div class="wave-container">
+        <div class="about-tasktrack">
+            <h2>Welcome to TaskTrack 🚀</h2>
+            <p>
+              Your personal task manager to keep you organized and productive.<br/>
+              Add, update, and track your tasks in one simple dashboard.<br/>
+              Stay on top of deadlines, and never miss an important update again!
+            </p>
+          </div>
+          
+        <svg class="wave-svg" viewBox="0 0 1440 320">
+          <path fill="#a29bfe" fill-opacity="1"
+            d="M0,160L40,170.7C80,181,160,203,240,202.7C320,203,400,181,480,154.7C560,128,640,96,720,101.3C800,107,880,149,960,181.3C1040,213,1120,235,1200,229.3C1280,224,1360,192,1400,176L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z">
+          </path>
+        </svg>
+      </div>
+      
+
     <!--Button Modal-->
     <div class="modal fade" id="exampleModal">
         <div class="modal-dialog modal-lg" role="document">
@@ -112,11 +167,16 @@
                     <form method="post" action="/changeStatus/<%= task.id %>/<%= task.status %>?_method=PATCH">
                         <button class="status-btn btn" id="status-<%= task.status %>" >start</button>
                     </form>
+                    <button onclick="deleteTask('<%= task.id %>')" class="btn btn-outline-danger btn-sm del-btn">Delete</button>
                 </div>
-                <!-- <button onclick="deleteTask('<%= task.id %>')">Delete</button> -->
+                
             </div>
         <% } %>
     </div>
+
+    <!-- Footer -->
+    
+  
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -124,15 +184,21 @@
     <script>
 
         let startBtns = document.querySelectorAll("#status-pending");
-        let compBtns = document.querySelectorAll("#status-ongoing");
+        let onBtns = document.querySelectorAll("#status-ongoing");
+        let compBtns = document.querySelectorAll("#status-completed");
         for(btn of startBtns) {
             btn.innerText = "Start";
             btn.classList.add("btn-danger");
         }
 
-        for(btn of compBtns) {
+        for(btn of onBtns) {
             btn.innerText = "Complete";
             btn.classList.add("btn-success");
+        }
+
+        for(btn of compBtns) {
+            btn.innerText = "Done ✅";
+            btn.disabled = true;
         }
 
         async function deleteTask(taskId) {        
@@ -150,5 +216,6 @@
             $('#myInput').trigger('focus')
         })
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+    
 </body>
-</html>

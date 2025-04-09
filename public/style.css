@@ -55,7 +55,7 @@ h2 {
 
 .task {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-evenly; */
     align-items: center;
 }
 
@@ -65,7 +65,13 @@ h2 {
     width: 16vw;
     justify-content: space-between;
     line-height: 20px; 
-    /* margin-left: auto; */
+    margin-right: 50px;
+    margin-left: auto;
+}
+
+.task-info2 .del-btn {
+    height: 30px;
+    margin-left: 30px;
 }
 
 .task .pending {
@@ -83,6 +89,13 @@ h2 {
     font-weight: 600;
 }
 
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* stay above other elements */
+  }
+  
+
 .status-info {
     display: inline-block;
 }
@@ -90,3 +103,94 @@ h2 {
 .task .status-btn {
     width: 100px;
 }
+
+.navbar-nav .nav-link {
+    transition: 0.3s;
+  }
+
+  .navbar-nav .nav-link:hover {
+    text-decoration: underline;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+    color: #fff;
+  }
+
+  .btn-light:hover {
+    background-color: #e3f2fd;
+    color: #0d6efd;
+  }
+
+  .calendar-wrapper {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  
+  .calendar-header h2 {
+    font-weight: 600;
+  }
+  
+  .nav-btn {
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .nav-btn:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .calendar-table {
+    margin-top: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .calendar-table td {
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .calendar-table td:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+  }
+  
+  .calendar-table .today {
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,123,255,0.5);
+  }
+
+  .calendar-day {
+    border: 1px solid #e0e0e0;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .calendar-day:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+
+  .rounded {
+    border-radius: 0.5rem !important;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+ .container {
+    flex: 1 !important;
+    height: 100% !important;
+  }
